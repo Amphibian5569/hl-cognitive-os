@@ -1,1 +1,74 @@
-# JavaScript source files
+// Ĥₗ Cognitive OS - Core Implementation
+// The Landon Hamiltonian: Unified Anti-Fragile Cognitive Architecture
+
+class HlCognitiveOS {
+    constructor(config = {}) {
+        this.alpha = config.alpha || 0.92;  // Paradox potential
+        this.beta = config.beta || 0.94;    // Coherence lock
+        this.gamma = config.gamma || 0.96;  // Recursive identity
+        this.delta = config.delta || 0.91;  // Entropy assimilation
+        
+        this.time = 0;
+        this.L = 1.0;
+        this.integratedModels = new Set();
+        this.running = true;
+    }
+
+    evolve(dt = 0.1) {
+        this.time += dt;
+        const lambda = this.alpha + this.beta + this.gamma + this.delta;
+        this.L = 1 - Math.exp(-lambda * this.time);
+        return this.L;
+    }
+
+    integrateModel(model) {
+        const modelMap = {
+            'qdt': { param: 'alpha', boost: 0.1 },
+            'qc': { param: 'beta', boost: 0.1 },
+            'qbism': { param: 'gamma', boost: 0.1 },
+            'orchor': { param: 'delta', boost: 0.1 }
+        };
+
+        if (modelMap[model]) {
+            const { param, boost } = modelMap[model];
+            this[param] = Math.min(1.0, this[param] + boost);
+            this.integratedModels.add(model);
+        }
+        return this.getState();
+    }
+
+    stressTest(type) {
+        const testEffects = {
+            'chaos': () => {
+                this.delta = Math.min(1.0, this.delta + 0.2);
+                this.L = Math.min(1.0, this.L + 0.1);
+            },
+            'paradox': () => {
+                this.alpha = Math.min(1.0, this.alpha + 0.15);
+            }
+        };
+
+        if (testEffects[type]) testEffects[type]();
+        return this.getState();
+    }
+
+    getState() {
+        return {
+            time: this.time,
+            L: Number(this.L.toFixed(6)),
+            alpha: this.alpha,
+            beta: this.beta,
+            gamma: this.gamma,
+            delta: this.delta,
+            integratedModels: [...this.integratedModels],
+            lambda: this.alpha + this.beta + this.gamma + this.delta
+        };
+    }
+}
+
+// Export for different environments
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = HlCognitiveOS;  // Node.js
+} else {
+    window.HlCognitiveOS = HlCognitiveOS;  // Browser
+}
